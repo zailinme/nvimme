@@ -1,62 +1,62 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    event = "VeryLazy",
+    -- 依赖插件
     dependencies = {
-        "nvim-treesitter/playground",
-        "nvim-treesitter/nvim-treesitter-textobjects",
+        "nvim-treesitter/playground",           -- 用于调试和开发 Treesitter 查询
+        "nvim-treesitter/nvim-treesitter-textobjects", -- 提供基于 Treesitter 的文本对象
     },
-    main = "nvim-treesitter.configs",
-    build = ":TSUpdate",
+    main = "nvim-treesitter.configs",  -- 主模块
+    build = ":TSUpdate",               -- 安装或更新时运行的命令
     opts = {
-        ensure_installed = "all",
+        -- 确保安装的语言解析器
+        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", },
+        
+        -- 启用语法高亮
         highlight = {
             enable = true,
         },
+        
+        -- 启用缩进
         indent = {
             enable = true,
         },
+        
+        -- 启用 Treesitter Playground
         playground = {
             enable = true,
         },
+        
+        -- 启用增量选择
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                init_selection = '<CR>',    -- 初始化选择
+                node_incremental = '<CR>',  -- 增加选择范围
+                node_decremental = '<BS>',  -- 减少选择范围
+                scope_incremental = '<TAB>', -- 选择父节点
+            }
+        },
+        
+        -- 文本对象设置
         textobjects = {
             select = {
                 enable = true,
-
-                -- Automatically jump forward to textobj, similar to targets.vim
-                lookahead = true,
-
+                lookahead = true,  -- 自动跳转到文本对象，类似于 targets.vim
                 keymaps = {
-                    -- You can use the capture groups defined in textobjects.scm
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                    ["ac"] = "@class.outer",
-                    -- You can optionally set descriptions to the mappings (used in the desc parameter of
-                    -- nvim_buf_set_keymap) which plugins like which-key display
-                    ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                    -- You can also use captures from other query groups like `locals.scm`
-                    ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+                    -- 可以使用 textobjects.scm 中定义的捕获组
+                    ["af"] = "@function.outer",  -- 选择函数外部
+                    ["if"] = "@function.inner",  -- 选择函数内部
+                    ["ac"] = "@class.outer",     -- 选择类外部
+                    ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" }, -- 选择类内部
+                    ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" }, -- 选择语言作用域
                 },
-                -- You can choose the select mode (default is charwise 'v')
-                --
-                -- Can also be a function which gets passed a table with the keys
-                -- * query_string: eg '@function.inner'
-                -- * method: eg 'v' or 'o'
-                -- and should return the mode ('v', 'V', or '<c-v>') or a table
-                -- mapping query_strings to modes.
+                -- 可以选择选择模式（默认是字符模式 'v'）
                 selection_modes = {
-                    ['@parameter.outer'] = 'v', -- charwise
-                    ['@function.outer'] = 'V', -- linewise
-                    ['@class.outer'] = '<c-v>', -- blockwise
+                    ['@parameter.outer'] = 'v',   -- 字符模式
+                    ['@function.outer'] = 'V',    -- 行模式
+                    ['@class.outer'] = '<c-v>',   -- 块模式
                 },
-                -- If you set this to `true` (default is `false`) then any textobject is
-                -- extended to include preceding or succeeding whitespace. Succeeding
-                -- whitespace has priority in order to act similarly to eg the built-in
-                -- `ap`.
-                --
-                -- Can also be a function which gets passed a table with the keys
-                -- * query_string: eg '@function.inner'
-                -- * selection_mode: eg 'v'
-                -- and should return true of false
+                -- 是否包含周围的空白字符
                 include_surrounding_whitespace = false,
             },
         },
