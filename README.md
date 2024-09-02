@@ -1,1 +1,1 @@
-# NeovimZero2Hero
+# personal nvim config
