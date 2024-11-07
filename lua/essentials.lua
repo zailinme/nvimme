@@ -53,4 +53,9 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv") -- 在可视模式下，将选中�
 
 -- vim.keymap.set({ "v", "n" }, "<leader>y", "\"+y") -- 在可视模式和普通模式下，按leader键加y复制内容到系统剪贴板
 
+-- 按 Ctrl+S 保存文件
+vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>', { noremap = true, silent = true }) -- 插入模式下ctrl+s 保存并返回到普通模式
+
+
 
