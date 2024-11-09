@@ -10,13 +10,37 @@ return {
     {
         -- persistence.nvim: 自动保存和恢复会话
         "folke/persistence.nvim",
-        event = "BufReadPre", -- this will only start session saving when an actual file was opened
-        keys = {
-            { "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]] },        -- 加载上次会话
-            { "<leader>ql", [[<cmd>lua require("persistence").load({ last = true})<cr>]] }, -- 加载最后一次会话
-            { "<leader>qd", [[<cmd>lua require("persistence").stop()<cr>]] },        -- 停止自动保存当前会话
+        event = "BufReadPre",
+        opts = {
+            autosave = {
+                enabled = false,  -- 禁用自动保存
+            },
         },
-        config = true, -- 使用默认配置
+        keys = {
+    		 -- 手动保存会话，可以输入名称
+            {
+                "<leader>ss",
+                function()
+                    local session_name = vim.fn.input("Session name: ")
+                    if session_name ~= "" then
+                        require("persistence").save({ name = session_name })
+                        vim.notify("Session saved: " .. session_name)
+                    end
+                end,
+                desc = "Save session with name",
+            },
+    		-- 加载指定名称的会话
+            {
+                "<leader>sl",
+                function()
+                    local session_name = vim.fn.input("Session name to load: ")
+                    if session_name ~= "" then
+                        require("persistence").load({ name = session_name })
+                    end
+                end,
+                desc = "Load named session",
+            },
+        },
     },
     {
         -- nvim-autopairs: 自动补全括号
